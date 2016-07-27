@@ -165,7 +165,7 @@ if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   HOME=$METEOR_DIR $METEOR_NPM install
 fi
 
-# Related to https://github.com/meteor/meteor/issues/2796 and 
+# Related to https://github.com/meteor/meteor/issues/2796 and
 # https://github.com/meteor/meteor/issues/2606.  Some packages only build their
 # assets at runtime, and thus they are not available for bundling unless meteor
 # has been launched.  To opt-in to this, set BUILDPACK_PRELAUNCH_METEOR=1.
@@ -189,6 +189,12 @@ rmdir $BUNDLE_DEST
 if [ -e "$COMPILE_DIR"/app/programs/server/package.json ]; then
   cd "$COMPILE_DIR"/app/programs/server
   HOME=$METEOR_DIR $METEOR_NPM install --production
+  BADNPM="
+    node_modules/focuster-react-typeahead/node_modules/babel-cli
+    node_modules/focuster-react-typeahead/node_modules/babel-preset-es2015
+    node_modules/focuster-react-typeahead/node_modules/babel-preset-react
+    "
+  rm -fr $BADNPM
 fi
 
 # Move meteor installation to where we can use it in bin/release
