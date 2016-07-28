@@ -190,12 +190,18 @@ if [ -e "$COMPILE_DIR"/app/programs/server/package.json ]; then
   cd "$COMPILE_DIR"/app/programs/server
   HOME=$METEOR_DIR $METEOR_NPM install --production
   BADNPM="
-    node_modules/focuster-react-typeahead/node_modules/babel-cli
-    node_modules/focuster-react-typeahead/node_modules/babel-preset-es2015
-    node_modules/focuster-react-typeahead/node_modules/babel-preset-react
+    npm/node_modules/focuster-react-typeahead/node_modules/babel-cli
+    npm/node_modules/focuster-react-typeahead/node_modules/babel-preset-es2015
+    npm/node_modules/focuster-react-typeahead/node_modules/babel-preset-react
+    ./npm/node_modules/focuster-react-typeahead/node_modules
+
     "
   rm -fr $BADNPM
+  du -k /
 fi
+
+# Cleanup unused node modules
+rm -fr $APP_SOURCE_DIR/node_modules
 
 # Move meteor installation to where we can use it in bin/release
 mv "$METEOR_DIR" "$APP_CHECKOUT_DIR/meteor-dist"
