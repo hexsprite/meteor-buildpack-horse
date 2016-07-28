@@ -189,19 +189,7 @@ rmdir $BUNDLE_DEST
 if [ -e "$COMPILE_DIR"/app/programs/server/package.json ]; then
   cd "$COMPILE_DIR"/app/programs/server
   HOME=$METEOR_DIR $METEOR_NPM install --production
-  BADNPM="
-    npm/node_modules/focuster-react-typeahead/node_modules/babel-cli
-    npm/node_modules/focuster-react-typeahead/node_modules/babel-preset-es2015
-    npm/node_modules/focuster-react-typeahead/node_modules/babel-preset-react
-    ./npm/node_modules/focuster-react-typeahead/node_modules
-
-    "
-  rm -fr $BADNPM
-  du -k /
 fi
-
-# Cleanup unused node modules
-rm -fr $APP_SOURCE_DIR/node_modules
 
 # Move meteor installation to where we can use it in bin/release
 mv "$METEOR_DIR" "$APP_CHECKOUT_DIR/meteor-dist"
@@ -228,3 +216,12 @@ echo "-----> Running extras"
 for file in `ls "$BUILDPACK_DIR"/extra | sort`; do
   . "$BUILDPACK_DIR"/extra/$file
 done
+
+# Cleanup Meteor checkout & build data, leaving only the compiled version
+echo "-----> Cleaning up Meteor build"
+rm -fr $APP_SOURCE_DIR/.meteor/local
+rm -fr $APP_SOURCE_DIR/*
+
+# Check final filesize
+echo "-----> Final size"
+du -k / | sort -n | tail -n 1000
