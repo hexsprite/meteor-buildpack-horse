@@ -220,9 +220,15 @@ done
 # Cleanup Meteor checkout & build data, leaving only the compiled version
 echo "-----> Cleaning up Meteor build"
 rm -fr $APP_SOURCE_DIR/.meteor/local
+rm -fr $APP_SOURCE_DIR/*
+
+# Cleanup unused version of meteor (1.4)
+# FIXME: should check what release is being used and remove the rest?
 UNUSED_METEOR_TOOL=$APP_CHECKOUT_DIR/.meteor-dist/.meteor/packages/meteor-tool/.1.4.0.hylsrj++os.linux.x86_64+web.browser+web.cordova/mt-os.linux.x86_64
 rm -fr $UNUSED_METEOR_TOOL
-rm -fr $APP_SOURCE_DIR/*
+# fix dangling link
+METEOR_TOOL=$APP_CHECKOUT_DIR/.meteor-dist/.meteor/packages/meteor-tool/.1.3.5_1.jfud72++os.linux.x86_64+web.browser+web.cordova/mt-os.linux.x86_6/meteor
+ln -fs $METEOR_TOOL $APP_CHECKOUT_DIR/.meteor-dist/.meteor/meteor
 
 # Check final filesize
 echo "-----> Final size"
