@@ -192,7 +192,7 @@ if [ -e "$COMPILE_DIR"/app/programs/server/package.json ]; then
 fi
 
 # Move meteor installation to where we can use it in bin/release
-mv "$METEOR_DIR" "$APP_CHECKOUT_DIR/meteor-dist"
+mv "$METEOR_DIR" "$APP_CHECKOUT_DIR/.meteor-dist"
 
 #
 # Environment
